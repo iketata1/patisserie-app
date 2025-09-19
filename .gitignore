@@ -1,0 +1,23 @@
+# Java / Spring Boot
+target/
+*.iml
+.idea/
+*.class
+*.jar
+*.war
+
+# Angular
+node_modules/
+dist/
+
+# Python / FastAPI
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

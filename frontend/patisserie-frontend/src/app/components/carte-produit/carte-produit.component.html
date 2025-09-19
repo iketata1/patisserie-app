@@ -1,0 +1,40 @@
+<!-- carte-produit.component.html -->
+<div class="carte-produit">
+  <!-- Image -->
+  <div class="carte-image-container">
+    <img
+      *ngIf="!imageHidden"
+      [src]="productService.getImageUrl(produit.imageUrl)"
+      [alt]="produit.name"
+      class="carte-image"
+      loading="lazy"
+      (error)="onImgError()"
+    />
+  </div>
+
+  <!-- Contenu -->
+  <div class="carte-content">
+    <h3 class="carte-title">{{ displayName }}</h3>
+    <p class="carte-desc">{{ displayDescription }}</p>
+
+    <div class="carte-info">
+      <span class="carte-stock">Quantité : {{ displayStock }}</span>
+      <span class="carte-prix">Prix/kg : {{ produit.price }} DT</span>
+    </div>
+
+    <div class="carte-actions">
+      <button
+        class="carte-btn"
+        (click)="addToCart($event)"
+        [disabled]="isProductExpired()"
+      >
+        Ajouter au panier
+      </button>
+
+      <!-- ✅ Nouveau bouton -->
+      <a [routerLink]="['/produit', produit.id]" class="btn-details">
+        <mat-icon>info</mat-icon> Détails
+      </a>
+    </div>
+  </div>
+</div>

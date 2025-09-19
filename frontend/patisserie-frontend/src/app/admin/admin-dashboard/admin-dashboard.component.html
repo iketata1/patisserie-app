@@ -1,0 +1,403 @@
+<!-- Message de test pour vérifier le chargement -->
+<div style="background: #4caf50; color: white; padding: 1rem; margin: 1rem; border-radius: 8px;">
+  ✅ Admin Dashboard chargé avec succès !
+</div>
+
+<div class="admin-dashboard">
+  <!-- Navigation -->
+  <nav class="dashboard-nav">
+    <button
+      *ngFor="let section of ['products', 'add-product', 'orders']"
+      [class.active]="selectedSection === section"
+      (click)="setSection(section)"
+      class="nav-btn"
+    >
+      <mat-icon>{{ section === 'products' ? 'inventory' : section === 'add-product' ? 'add_circle' : 'receipt' }}</mat-icon>
+      {{ section === 'products' ? 'Produits' : section === 'add-product' ? 'Ajouter un produit' : 'Commandes' }}
+    </button>
+  </nav>
+
+  <!-- Contenu principal -->
+  <div class="dashboard-content">
+    <div class="dashboard-header">
+      <h1 class="section-title">{{ getSectionTitle() }}</h1>
+
+      <!-- Bouton de test API -->
+      <button class="btn-test-api" (click)="testApiConnectivity()" *ngIf="selectedSection === 'orders'">
+        <mat-icon>bug_report</mat-icon>
+        Test API
+      </button>
+    </div>
+
+    <div [ngSwitch]="selectedSection">
+      <!-- Section Produits -->
+      <div *ngSwitchCase="'products'" class="products-section">
+        <div class="section-header">
+          <h2>Liste des produits</h2>
+          <div class="stats">
+            <div class="stat-item">
+              <mat-icon>inventory</mat-icon>
+              <span>{{ products.length }} produits</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="products-grid">
+          <div *ngFor="let product of products" class="product-card">
+            <div class="product-image">
+              <img [src]="productService.getImageUrl(product.imageUrl)" [alt]="product.name" />
+            </div>
+            <div class="product-info">
+              <h3>{{ product.name }}</h3>
+              <p class="product-category">{{ product.category }}</p>
+              <p class="product-price">{{ product.price | currency:'TND' }}</p>
+              <p class="product-stock">Stock: {{ product.stock }}</p>
+            </div>
+            <div class="product-actions">
+              <button class="btn-edit" (click)="editProduct(product.id!)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button class="btn-delete" (click)="deleteProduct(product.id!)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Ajouter un produit -->
+      <div *ngSwitchCase="'add-product'" class="add-product-section">
+        <div class="form-container">
+          <h2>Ajouter un nouveau produit</h2>
+          <form (ngSubmit)="addProduct()" class="product-form">
+            <div class="form-group">
+              <label>Nom du produit</label>
+              <input type="text" [(ngModel)]="newProduct.name" name="name" required />
+            </div>
+            <div class="form-group">
+              <label>Prix</label>
+              <input type="number" [(ngModel)]="newProduct.price" name="price" required />
+            </div>
+            <div class="form-group">
+              <label>Stock</label>
+              <input type="number" [(ngModel)]="newProduct.stock" name="stock" required />
+            </div>
+            <div class="form-group">
+              <label>Catégorie</label>
+              <select [(ngModel)]="newProduct.category" name="category" required>
+                <option value="">Sélectionner une catégorie</option>
+                <option value="Gâteau">Gâteau</option>
+                <option value="Pièce montée">Pièce montée</option>
+                <option value="Pack soutenance">Pack soutenance</option>
+                <option value="Hlow aarbi">Hlow aarbi</option>
+                <option value="Mignardise">Mignardise</option>
+                <option value="Les coffrets">Les coffrets</option>
+                <option value="Macaron">Macaron</option>
+                <option value="Dates farcies">Dates farcies</option>
+                <option value="Fêtes de naissance">Fêtes de naissance</option>
+                <option value="Salé">Salé</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea [(ngModel)]="newProduct.description" name="description" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label>URL de l'image</label>
+              <input type="text" [(ngModel)]="newProduct.imageUrl" name="imageUrl" />
+            </div>
+            <button type="submit" class="btn-primary">Ajouter le produit</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Section Commandes -->
+      <div *ngSwitchCase="'orders'" class="orders-section">
+        <!-- Statistiques -->
+        <div class="orders-stats">
+          <div class="stat-card">
+            <mat-icon class="stat-icon">receipt</mat-icon>
+            <div class="stat-content">
+              <h3>{{ getTotalOrders() }}</h3>
+              <p>Total commandes</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <mat-icon class="stat-icon">euro</mat-icon>
+            <div class="stat-content">
+              <h3>{{ chiffreAffaires | currency:'TND' }}</h3>
+              <p>Chiffre d'affaires</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <mat-icon class="stat-icon">trending_up</mat-icon>
+            <div class="stat-content">
+              <h3>{{ getAverageOrderValue() | currency:'TND' }}</h3>
+              <p>Panier moyen</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtres -->
+        <div class="orders-filters">
+          <div class="filter-group">
+            <label>Statut :</label>
+            <select [(ngModel)]="orderStatusFilter" (change)="onOrderStatusFilterChange(orderStatusFilter)">
+              <option value="">Tous les statuts</option>
+              <option *ngFor="let status of availableStatuses" [value]="status">
+                {{ getStatusLabel(status) }}
+              </option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Recherche :</label>
+            <input
+              type="text"
+              [(ngModel)]="orderSearch"
+              (input)="onOrderSearchChange(orderSearch)"
+              placeholder="Client, N° commande..."
+            />
+          </div>
+        </div>
+
+        <!-- Grille des commandes -->
+        <div class="orders-grid">
+          <div *ngFor="let order of filteredOrders; trackBy: trackByOrderId" class="order-card">
+            <div class="order-header">
+              <h3>Commande N° {{ order.id }}</h3>
+              <span
+                class="order-status"
+                [style.background-color]="getOrderStatusColor(order.status)"
+              >
+                <mat-icon>{{ getOrderStatusIcon(order.status) }}</mat-icon>
+                {{ getOrderStatusLabel(order.status) }}
+              </span>
+            </div>
+
+            <div class="order-details">
+              <div class="detail-row">
+                <mat-icon>schedule</mat-icon>
+                <span>{{ order.orderDate | date:'short' }}</span>
+              </div>
+              <div class="detail-row">
+                <mat-icon>person</mat-icon>
+                <span>{{ order.buyerDetails?.name }} {{ order.buyerDetails?.surname }}</span>
+              </div>
+              <div class="detail-row">
+                <mat-icon>phone</mat-icon>
+                <span>{{ order.buyerDetails?.phone }}</span>
+              </div>
+              <div class="detail-row">
+                <mat-icon>location_on</mat-icon>
+                <span>{{ order.buyerDetails?.address }}</span>
+              </div>
+              <div class="detail-row total">
+                <mat-icon>euro</mat-icon>
+                <span>{{ order.total | currency:'TND' }}</span>
+              </div>
+            </div>
+
+            <div class="order-products">
+              <h4>Produits commandés :</h4>
+              <div class="products-list">
+                <div *ngFor="let product of order.products" class="product-item">
+                  <img [src]="productService.getImageUrl(product.imageUrl)" [alt]="product.name" />
+                  <div class="product-details">
+                    <span class="product-name">{{ product.name }}</span>
+                    <span class="product-quantity">x{{ product.quantity || 1 }}</span>
+                    <span class="product-price">{{ product.price | currency:'TND' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="order-actions">
+              <button class="btn-status btn-status-update" (click)="openStatusModal(order.id!)">
+                <mat-icon>update</mat-icon>
+                Mettre à jour le statut
+              </button>
+              <button class="btn-danger btn-delete-order" (click)="deleteOrder(order.id!)">
+                <mat-icon>delete</mat-icon>
+                Supprimer la commande
+              </button>
+              <button class="btn-timeline" (click)="openTimelineModal(order)">
+                <mat-icon>timeline</mat-icon>
+                Voir l'historique
+              </button>
+            </div>
+          </div>
+
+          <!-- Message si aucune commande -->
+          <div *ngIf="filteredOrders.length === 0" class="no-orders">
+            <mat-icon>receipt</mat-icon>
+            <h3>Aucune commande trouvée</h3>
+            <p>Aucune commande ne correspond à vos critères de recherche.</p>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="orders-pagination" *ngIf="filteredOrders.length > 0">
+          <button
+            class="btn-pagination"
+            [disabled]="ordersPage === 1"
+            (click)="onOrdersPageChange(ordersPage-1)"
+          >
+            <mat-icon>chevron_left</mat-icon>
+            Précédent
+          </button>
+          <span class="page-info">Page {{ ordersPage }}</span>
+          <button
+            class="btn-pagination"
+            [disabled]="filteredOrders.length < ordersPageSize"
+            (click)="onOrdersPageChange(ordersPage+1)"
+          >
+            Suivant
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modale de mise à jour du statut -->
+  <div *ngIf="showStatusModal" class="modal-overlay" (click)="closeStatusModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Mettre à jour le statut</h3>
+        <button class="btn-close" (click)="closeStatusModal()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p>Commande N° {{ selectedOrderId }}</p>
+
+        <div class="form-group">
+          <label>Nouveau statut :</label>
+          <select [(ngModel)]="newStatus" required [disabled]="isLoading">
+            <option value="">Sélectionner un statut</option>
+            <option *ngFor="let status of availableStatuses" [value]="status">
+              {{ getStatusLabel(status) }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Commentaire (optionnel) :</label>
+          <textarea [(ngModel)]="statusComment" rows="3" placeholder="Ajouter un commentaire..." [disabled]="isLoading"></textarea>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-message-modal">
+          <mat-icon>error</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" (click)="closeStatusModal()" [disabled]="isLoading">Annuler</button>
+        <button class="btn-primary" (click)="updateOrderStatus()" [disabled]="!newStatus || isLoading">
+          <mat-spinner *ngIf="isLoading" diameter="20" class="spinner-inline"></mat-spinner>
+          <span *ngIf="!isLoading">Confirmer</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modale du timeline -->
+  <div *ngIf="showTimelineModal" class="modal-overlay" (click)="closeTimelineModal()">
+    <div class="modal-content timeline-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Historique de la commande N° {{ selectedOrderForTimeline?.id }}</h3>
+        <button class="btn-close" (click)="closeTimelineModal()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <app-order-timeline
+          *ngIf="selectedOrderForTimeline"
+          [orderId]="selectedOrderForTimeline.id!"
+          [currentStatus]="selectedOrderForTimeline.status"
+        ></app-order-timeline>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages d'erreur -->
+  <div *ngIf="errorMessage" class="error-message">
+    <mat-icon>error</mat-icon>
+    <span>{{ errorMessage }}</span>
+    <button class="btn-close" (click)="errorMessage = null">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Section d'aide et diagnostic -->
+  <div *ngIf="selectedSection === 'orders'" class="help-section">
+    <div class="help-header">
+      <h3>
+        <mat-icon>help</mat-icon>
+        Guide de diagnostic
+      </h3>
+      <button class="btn-help-toggle" (click)="toggleHelp()">
+        <mat-icon>{{ showHelp ? 'expand_less' : 'expand_more' }}</mat-icon>
+        {{ showHelp ? 'Masquer l\'aide' : 'Afficher l\'aide' }}
+      </button>
+    </div>
+
+    <div *ngIf="showHelp" class="help-content">
+      <div class="help-item">
+        <h4>🔧 Problème de mise à jour du statut ?</h4>
+        <p>Étapes de diagnostic :</p>
+        <ol>
+          <li><strong>Vérifier la connectivité :</strong> Cliquez sur « Test API »</li>
+          <li><strong>Vérifier le backend :</strong> serveur Java actif</li>
+          <li><strong>Vérifier l’URL :</strong> API <code>http://localhost:8087/inesk/api</code></li>
+          <li><strong>Vérifier l’authentification :</strong> connecté en ADMIN</li>
+        </ol>
+
+        <div class="help-actions">
+          <button class="btn-test-endpoint" (click)="testApiConnectivity()">
+            <mat-icon>bug_report</mat-icon>
+            Tester l'endpoint
+          </button>
+          <button class="btn-refresh-data" (click)="loadOrders()">
+            <mat-icon>refresh</mat-icon>
+            Actualiser les données
+          </button>
+        </div>
+
+        <div class="test-buttons">
+          <button class="btn-test" (click)="checkAuthStatus()">
+            <mat-icon>verified_user</mat-icon>
+            Vérifier Auth
+          </button>
+          <button class="btn-test" (click)="diagnoseUserRole()">
+            <mat-icon>security</mat-icon>
+            Diagnostic Rôles
+          </button>
+          <button class="btn-test" (click)="testCreateAdminUser()">
+            <mat-icon>person_add</mat-icon>
+            Créer Admin Test
+          </button>
+          <button class="btn-test" (click)="testCreateOrder()">
+            <mat-icon>add_shopping_cart</mat-icon>
+            Créer Commande Test
+          </button>
+          <button class="btn-test" (click)="diagnoseOrdersState()">
+            <mat-icon>bug_report</mat-icon>
+            Diagnostic Commandes
+          </button>
+          <button class="btn-test" (click)="forceReloadOrders()">
+            <mat-icon>refresh</mat-icon>
+            Forcer Rechargement
+          </button>
+          <button class="btn-test btn-danger" (click)="forceLogout()">
+            <mat-icon>logout</mat-icon>
+            Forcer Déconnexion
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

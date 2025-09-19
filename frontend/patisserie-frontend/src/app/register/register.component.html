@@ -1,0 +1,176 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <h2>
+        <mat-icon class="header-icon">person_add</mat-icon>
+        Créer un compte
+      </h2>
+      <p class="register-subtitle">Rejoignez notre communauté de passionnés de pâtisserie</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" *ngIf="!successMessage; else successTemplate" class="register-form">
+      
+      <!-- Informations de base -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <mat-icon>person</mat-icon>
+          Informations de base
+        </h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>
+                <mat-icon class="field-icon">person</mat-icon>
+                Nom d'utilisateur *
+              </mat-label>
+              <input matInput [(ngModel)]="user.username" name="username" required 
+                     placeholder="Votre nom d'utilisateur" class="form-input">
+              <mat-icon matSuffix class="suffix-icon">account_circle</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>
+                <mat-icon class="field-icon">email</mat-icon>
+                Email *
+              </mat-label>
+              <input matInput type="email" [(ngModel)]="user.email" name="email" required 
+                     placeholder="votre.email@exemple.com" class="form-input">
+              <mat-icon matSuffix class="suffix-icon">mail</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>
+                <mat-icon class="field-icon">lock</mat-icon>
+                Mot de passe *
+              </mat-label>
+              <input matInput type="password" [(ngModel)]="user.password" name="password" required 
+                     placeholder="Minimum 6 caractères" class="form-input">
+              <mat-icon matSuffix class="suffix-icon">security</mat-icon>
+            </mat-form-field>
+          </div>
+
+      <div class="form-group">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>
+                <mat-icon class="field-icon">lock_outline</mat-icon>
+                Confirmer le mot de passe *
+              </mat-label>
+              <input matInput type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required 
+                     placeholder="Répétez votre mot de passe" class="form-input">
+              <mat-icon matSuffix class="suffix-icon">verified</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!-- Informations personnelles -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <mat-icon>contact_phone</mat-icon>
+          Informations personnelles
+        </h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>
+                <mat-icon class="field-icon">person_outline</mat-icon>
+                Prénom
+              </mat-label>
+              <input matInput [(ngModel)]="user.prenom" name="prenom" 
+                     placeholder="Votre prénom" class="form-input">
+              <mat-icon matSuffix class="suffix-icon">face</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>
+                <mat-icon class="field-icon">badge</mat-icon>
+                Nom
+              </mat-label>
+              <input matInput [(ngModel)]="user.nom" name="nom" 
+                     placeholder="Votre nom" class="form-input">
+              <mat-icon matSuffix class="suffix-icon">person_pin</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>
+                <mat-icon class="field-icon">phone</mat-icon>
+                Téléphone
+              </mat-label>
+              <input matInput [(ngModel)]="user.telephone" name="telephone" 
+                     placeholder="Votre numéro de téléphone" class="form-input">
+              <mat-icon matSuffix class="suffix-icon">call</mat-icon>
+            </mat-form-field>
+          </div>
+
+      <div class="form-group">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>
+                <mat-icon class="field-icon">location_on</mat-icon>
+                Adresse
+              </mat-label>
+              <input matInput [(ngModel)]="user.adresse" name="adresse" 
+                     placeholder="Votre adresse" class="form-input">
+              <mat-icon matSuffix class="suffix-icon">home</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!-- Messages d'erreur et de succès -->
+      <div *ngIf="errorMessage" class="alert-error">
+        <mat-icon>error</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Boutons d'action -->
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="resetForm()">
+          <mat-icon>refresh</mat-icon>
+          <span>Réinitialiser</span>
+        </button>
+        <button type="button" class="btn-link" (click)="goToLogin()">
+          <mat-icon>login</mat-icon>
+          <span>Déjà un compte ?</span>
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="isLoading">
+          <mat-icon *ngIf="!isLoading">person_add</mat-icon>
+          <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+          <span>{{ isLoading ? 'Inscription en cours...' : 'Créer mon compte' }}</span>
+        </button>
+      </div>
+    </form>
+
+    <!-- Template de succès -->
+    <ng-template #successTemplate>
+      <div class="success-container">
+        <div class="success-icon">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <div class="success-content">
+          <h3>Inscription réussie !</h3>
+          <p>{{ successMessage }}</p>
+          <div class="success-actions">
+            <button class="btn-primary" (click)="goToLogin()">
+              <mat-icon>login</mat-icon>
+              <span>Aller à la connexion</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

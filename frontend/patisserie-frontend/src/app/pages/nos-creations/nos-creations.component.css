@@ -1,0 +1,321 @@
+/* Container principal */
+.nos-creations-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Header de la page */
+.page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 25px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(229, 192, 123, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.page-title {
+  font-family: 'Playfair Display', serif;
+  color: #e5c07b;
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.title-icon {
+  font-size: 3rem;
+  color: #e5c07b;
+}
+
+.page-subtitle {
+  color: #6c757d;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.2rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Wrapper du contenu */
+.content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Section filtre */
+.filter-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.category-filter {
+  width: 100%;
+  max-width: 400px;
+}
+
+.category-filter ::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.category-filter ::ng-deep .mat-form-field-outline {
+  border-radius: 20px;
+  border: 2px solid rgba(229, 192, 123, 0.3);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.category-filter ::ng-deep .mat-form-field-outline:hover {
+  border-color: #e5c07b;
+}
+
+.category-filter ::ng-deep .mat-form-field-outline.mat-focused {
+  border-color: #e5c07b;
+}
+
+.category-filter ::ng-deep .mat-form-field-label {
+  color: #6c757d;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}
+
+.category-filter ::ng-deep .mat-form-field-label.mat-focused {
+  color: #e5c07b;
+}
+
+.category-filter ::ng-deep .mat-form-field-outline-thick {
+  color: #e5c07b;
+}
+
+.field-icon {
+  font-size: 1.2rem;
+  color: #e5c07b;
+  margin-right: 0.5rem;
+}
+
+/* Message d'erreur */
+.error-message {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  color: #721c24;
+  padding: 2rem;
+  border-radius: 20px;
+  margin: 2rem 0;
+  border: 2px solid #f5c6cb;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  animation: shake 0.5s ease-in-out;
+  box-shadow: 0 8px 32px rgba(220, 53, 69, 0.1);
+}
+
+.error-icon {
+  font-size: 2.5rem;
+  color: #dc3545;
+}
+
+.error-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.error-content p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Indicateur de chargement */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 25px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(229, 192, 123, 0.2);
+  text-align: center;
+}
+
+.loading-spinner {
+  margin-bottom: 1.5rem;
+}
+
+.loading-container h3 {
+  color: #e5c07b;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+}
+
+.loading-container p {
+  color: #6c757d;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Grille des produits */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Message aucun produit */
+.no-products {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 25px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(229, 192, 123, 0.2);
+}
+
+.no-products-icon {
+  font-size: 4rem;
+  color: #e5c07b;
+  margin-bottom: 1.5rem;
+}
+
+.no-products h3 {
+  font-family: 'Playfair Display', serif;
+  color: #2c3e50;
+  font-size: 2rem;
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+}
+
+.no-products p {
+  color: #6c757d;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  margin: 0 0 2rem 0;
+}
+
+.btn-reset {
+  background: linear-gradient(135deg, #e5c07b 0%, #f4d03f 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(229, 192, 123, 0.3);
+}
+
+.btn-reset:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(229, 192, 123, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nos-creations-container {
+    padding: 1rem;
+  }
+  
+  .page-header {
+    padding: 2rem 1.5rem;
+  }
+  
+  .page-title {
+    font-size: 2.5rem;
+  }
+  
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .error-message {
+    padding: 1.5rem;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .loading-container {
+    padding: 3rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 2rem;
+    flex-direction: column;
+  }
+  
+  .title-icon {
+    font-size: 2.5rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1rem;
+  }
+  
+  .no-products h3 {
+    font-size: 1.6rem;
+  }
+  
+  .btn-reset {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-header {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.products-grid {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* États de focus améliorés */
+.category-filter ::ng-deep .mat-form-field-outline.mat-focused {
+  border-width: 2px;
+}
+
+.category-filter ::ng-deep .mat-form-field-outline-thick {
+  border-width: 2px;
+}

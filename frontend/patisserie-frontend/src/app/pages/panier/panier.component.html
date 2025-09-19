@@ -1,0 +1,57 @@
+<section class="panier-page">
+  <header class="hero">
+    <div class="container">
+      <h2>Votre panier</h2>
+      <p class="lead">Vérifiez votre commande et renseignez vos coordonnées.</p>
+    </div>
+  </header>
+
+  <div class="container grid">
+    <!-- Résumé commande -->
+    <aside class="card summary">
+      <h3>Récapitulatif</h3>
+      <div class="cart-items">
+        <div class="cart-item" *ngFor="let product of products">
+          <img [src]="product.imageUrl ? 'http://localhost:8087' + product.imageUrl : ''" alt="{{ product.name }}" width="50" *ngIf="product.imageUrl" />
+          <div>
+            <h4>{{ product.name }} <small class="muted">({{ product.category }})</small></h4>
+            <p>{{ product.price | currency:'TND' }} × {{ product.quantity || 1 }} = <b>{{ product.price * (product.quantity || 1) | currency:'TND' }}</b></p>
+          </div>
+          <button class="remove-btn" (click)="removeFromCart(product.id || 0)" aria-label="Supprimer l'article">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <p *ngIf="!products.length" class="empty">Votre panier est vide.</p>
+      </div>
+      <div class="total-line">
+        <span>Total</span>
+        <strong>{{ total | currency:'TND' }}</strong>
+      </div>
+    </aside>
+
+    <!-- Formulaire acheteur -->
+    <section class="card form-card">
+      <h3>Détails de l'acheteur</h3>
+      <form class="buyer-form">
+        <label class="fg">
+          <input placeholder=" " [(ngModel)]="buyerDetails.name" name="name" required>
+          <span>Nom</span>
+        </label>
+        <label class="fg">
+          <input placeholder=" " [(ngModel)]="buyerDetails.surname" name="surname" required>
+          <span>Prénom</span>
+        </label>
+        <label class="fg">
+          <input placeholder=" " [(ngModel)]="buyerDetails.phone" name="phone" required>
+          <span>Téléphone</span>
+        </label>
+        <label class="fg">
+          <input placeholder=" " [(ngModel)]="buyerDetails.address" name="address" required>
+          <span>Adresse</span>
+        </label>
+      </form>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <button (click)="confirmOrder()" [disabled]="!buyerDetails.name || !buyerDetails.surname || !buyerDetails.phone || !buyerDetails.address || !products.length" class="confirm-btn">Confirmer la commande</button>
+    </section>
+  </div>
+</section>

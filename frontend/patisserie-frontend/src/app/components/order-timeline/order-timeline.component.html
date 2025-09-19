@@ -1,0 +1,101 @@
+<!-- src/app/components/order-timeline/order-timeline.component.html -->
+<div class="order-timeline-container">
+  <!-- En-tête du timeline -->
+  <div class="timeline-header">
+    <h3 class="timeline-title">
+      <mat-icon class="timeline-icon">timeline</mat-icon>
+      Suivi de commande
+    </h3>
+    <p class="timeline-subtitle">Historique des statuts de votre commande</p>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage && !isLoading" class="timeline-error">
+    <mat-icon class="error-icon">error</mat-icon>
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <!-- État de chargement -->
+  <div *ngIf="isLoading" class="timeline-loading">
+    <mat-spinner class="loading-spinner" diameter="40"></mat-spinner>
+    <p>Chargement de l'historique...</p>
+  </div>
+
+  <!-- Timeline principal -->
+  <div *ngIf="!isLoading && !errorMessage" class="timeline">
+    <!-- Timeline vertical -->
+    <div class="timeline-track" *ngIf="timelineData$ | async as timelineData">
+      <div class="timeline-line"></div>
+      
+      <!-- Étapes du timeline -->
+      <div 
+        *ngFor="let update of timelineData; let i = index" 
+        class="timeline-item"
+        [class.last-item]="i === timelineData.length - 1"
+      >
+        <!-- Point du timeline -->
+        <div 
+          class="timeline-point {{ getTimelineStepClass(update.status) }}"
+          [style.background-color]="getStatusColor(update.status)"
+        >
+          <mat-icon class="point-icon">{{ getStatusIcon(update.status) }}</mat-icon>
+        </div>
+
+        <!-- Contenu de l'étape -->
+        <div class="timeline-content">
+          <div class="timeline-step-header">
+            <h4 class="step-title">{{ getStatusLabel(update.status) }}</h4>
+            <span class="step-time">{{ formatDate(update.timestamp) }}</span>
+          </div>
+          
+          <p class="step-description">{{ getStatusDescription(update.status) }}</p>
+          
+          <!-- Commentaire optionnel -->
+          <div *ngIf="update.comment" class="step-comment">
+            <mat-icon class="comment-icon">comment</mat-icon>
+            <p class="comment-text">{{ update.comment }}</p>
+          </div>
+
+          <!-- Informations supplémentaires -->
+          <div class="step-meta">
+            <span *ngIf="update.updatedBy" class="meta-item">
+              <mat-icon class="meta-icon">person</mat-icon>
+              {{ update.updatedBy }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline horizontal pour mobile -->
+    <div class="timeline-horizontal" *ngIf="timelineData$ | async as timelineData">
+      <div class="timeline-track-horizontal">
+        <div class="timeline-line-horizontal"></div>
+        
+        <div 
+          *ngFor="let update of timelineData; let i = index" 
+          class="timeline-item-horizontal"
+        >
+          <div 
+            class="timeline-point-horizontal {{ getTimelineStepClass(update.status) }}"
+            [style.background-color]="getStatusColor(update.status)"
+          >
+            <mat-icon class="point-icon-horizontal">{{ getStatusIcon(update.status) }}</mat-icon>
+          </div>
+          
+          <div class="timeline-content-horizontal">
+            <h5 class="step-title-horizontal">{{ getStatusLabel(update.status) }}</h5>
+            <span class="step-time-horizontal">{{ formatDate(update.timestamp) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message si aucun historique -->
+  <div *ngIf="!isLoading && !errorMessage && (timelineData$ | async)?.length === 0" class="timeline-empty">
+    <mat-icon class="empty-icon">history</mat-icon>
+    <h4>Aucun historique disponible</h4>
+    <p>L'historique des statuts de cette commande n'est pas encore disponible.</p>
+  </div>
+</div>

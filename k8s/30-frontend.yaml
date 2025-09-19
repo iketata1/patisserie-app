@@ -1,0 +1,33 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: patiss-frontend
+  namespace: patiss
+spec:
+  selector:
+    app: patiss-frontend
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: patiss-frontend
+  namespace: patiss
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: patiss-frontend
+  template:
+    metadata:
+      labels:
+        app: patiss-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: patiss-app-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80

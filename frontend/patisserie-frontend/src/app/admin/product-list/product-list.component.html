@@ -1,0 +1,64 @@
+<div class="products-list-container">
+  <div class="list-header">
+    <h2 class="list-title">
+      <mat-icon class="title-icon">inventory_2</mat-icon>
+      Liste des produits
+    </h2>
+    <p class="list-subtitle">Gérez votre catalogue de produits</p>
+  </div>
+
+  <div class="products-grid">
+    <div class="product-card" *ngFor="let product of products">
+      <div class="product-image">
+        <img 
+        [src]="makeImageUrl(product.imageUrl)" 
+        [alt]="product.name" 
+        class="product-img"
+        (error)="makeImageUrl('')">
+      
+
+        <div class="no-image" *ngIf="!product.imageUrl">
+          <mat-icon>image</mat-icon>
+        </div>
+      </div>
+      
+      <div class="product-content">
+        <h3 class="product-name">{{ product.name }}</h3>
+        <p class="product-description">{{ product.description }}</p>
+        
+        <div class="product-details">
+          <div class="detail-item">
+            <mat-icon class="detail-icon">euro</mat-icon>
+            <span class="detail-value">{{ product.price | currency:'TND' }}</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon class="detail-icon">inventory</mat-icon>
+            <span class="detail-value">{{ product.stock }} en stock</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon class="detail-icon">category</mat-icon>
+            <span class="detail-value">{{ product.category }}</span>
+          </div>
+        </div>
+        
+        <div class="product-actions">
+          <button class="btn-edit" (click)="updateProduct(product.id!)" *ngIf="product.id">
+            <mat-icon>edit</mat-icon>
+            Modifier
+          </button>
+          <button class="btn-delete" (click)="deleteProduct(product.id!)" *ngIf="product.id">
+            <mat-icon>delete</mat-icon>
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message si aucun produit -->
+  <div *ngIf="products.length === 0" class="no-products">
+    <mat-icon class="no-products-icon">inventory_2</mat-icon>
+    <h3>Aucun produit trouvé</h3>
+    <p>Commencez par ajouter votre premier produit !</p>
+  </div>
+</div>

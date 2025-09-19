@@ -1,0 +1,61 @@
+<div class="nos-creations-container">
+  <div class="page-header">
+    <h1 class="page-title">
+      <mat-icon class="title-icon">cake</mat-icon>
+      Nos créations
+    </h1>
+    <p class="page-subtitle">Découvrez notre sélection de pâtisseries artisanales</p>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Filtre par catégorie -->
+    <div class="filter-section">
+      <mat-form-field appearance="outline" class="category-filter">
+        <mat-label>
+          <mat-icon class="field-icon">filter_list</mat-icon>
+          Filtrer par catégorie
+        </mat-label>
+        <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onCategoryChange()">
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>category</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <!-- Message d'erreur -->
+    <div *ngIf="errorMessage" class="error-message">
+      <mat-icon class="error-icon">error</mat-icon>
+      <div class="error-content">
+        <h3>Erreur de chargement</h3>
+        <p>{{ errorMessage }}</p>
+      </div>
+    </div>
+
+    <!-- Indicateur de chargement -->
+    <div *ngIf="isLoading" class="loading-container">
+      <div class="loading-spinner">
+        <mat-spinner diameter="60"></mat-spinner>
+      </div>
+      <h3>Chargement en cours...</h3>
+      <p>Nous récupérons nos délicieuses créations pour vous</p>
+    </div>
+
+    <!-- Grille des produits -->
+    <div *ngIf="!isLoading && !errorMessage" class="products-grid">
+      <app-carte-produit *ngFor="let product of products" [produit]="product"></app-carte-produit>
+    </div>
+
+    <!-- Message si aucun produit -->
+    <div *ngIf="!isLoading && !errorMessage && products.length === 0" class="no-products">
+      <mat-icon class="no-products-icon">inventory_2</mat-icon>
+      <h3>Aucun produit trouvé</h3>
+      <p>Aucun produit ne correspond à cette catégorie pour le moment.</p>
+      <button class="btn-reset" (click)="selectedCategory = 'Toutes'; onCategoryChange()">
+        <mat-icon>refresh</mat-icon>
+        Voir toutes les catégories
+      </button>
+    </div>
+  </div>
+</div>

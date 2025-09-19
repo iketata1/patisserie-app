@@ -1,0 +1,415 @@
+/* ===== VARIABLES CSS ===== */
+:root {
+  --primary-color: #e5c07b;
+  --primary-light: #f4d03f;
+  --primary-dark: #d4ac0b;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+  --white: #ffffff;
+  --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --shadow-heavy: 0 8px 30px rgba(0, 0, 0, 0.2);
+  --border-radius: 12px;
+  --border-radius-lg: 20px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== CONTAINER PRINCIPAL ===== */
+.register-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* ===== CARTE D'INSCRIPTION ===== */
+.register-card {
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-heavy);
+  padding: 3rem;
+  width: 100%;
+  max-width: 800px;
+  animation: slideInUp 0.6s ease-out;
+  border: 2px solid rgba(229, 192, 123, 0.2);
+}
+
+/* ===== HEADER ===== */
+.register-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid rgba(229, 192, 123, 0.2);
+}
+
+.register-header h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--primary-color);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-icon {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  animation: pulse 2s infinite;
+}
+
+.register-subtitle {
+  color: var(--secondary-color);
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ===== FORMULAIRE ===== */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ===== SECTIONS ===== */
+.form-section {
+  background: var(--light-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  border: 1px solid rgba(229, 192, 123, 0.2);
+  transition: var(--transition);
+}
+
+.form-section:hover {
+  box-shadow: var(--shadow-light);
+  transform: translateY(-2px);
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  color: var(--dark-color);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title mat-icon {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+}
+
+/* ===== RANGÉES DE FORMULAIRES ===== */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-row:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== GROUPES DE CHAMPS ===== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== CHAMPS DE FORMULAIRE ===== */
+.form-field {
+  width: 100%;
+}
+
+.form-field ::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.form-field ::ng-deep .mat-form-field-outline {
+  border-radius: var(--border-radius);
+  border: 2px solid rgba(229, 192, 123, 0.2);
+  background: rgba(255, 255, 255, 0.8);
+  transition: var(--transition);
+}
+
+.form-field ::ng-deep .mat-form-field-outline:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-light);
+}
+
+.form-field ::ng-deep .mat-form-field-outline.mat-focused {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(229, 192, 123, 0.1);
+}
+
+.form-field ::ng-deep .mat-form-field-label {
+  color: var(--secondary-color);
+  font-weight: 500;
+}
+
+.form-field ::ng-deep .mat-form-field-label.mat-focused {
+  color: var(--primary-color);
+}
+
+.form-field ::ng-deep .mat-form-field-outline-thick {
+  color: var(--primary-color);
+}
+
+.form-field ::ng-deep .mat-input-element {
+  color: var(--dark-color);
+  font-weight: 500;
+}
+
+/* ===== ICÔNES ===== */
+.field-icon {
+  color: var(--primary-color);
+  margin-right: 0.5rem;
+}
+
+.suffix-icon {
+  color: var(--secondary-color);
+}
+
+/* ===== MESSAGES D'ALERTE ===== */
+.alert-error {
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  border: 2px solid var(--danger-color);
+  border-radius: var(--border-radius);
+  padding: 1rem 1.5rem;
+  color: var(--danger-color);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  animation: shake 0.5s ease-in-out;
+}
+
+.alert-error mat-icon {
+  font-size: 1.2rem;
+}
+
+/* ===== BOUTONS D'ACTION ===== */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid rgba(229, 192, 123, 0.2);
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-link {
+  padding: 1rem 2rem;
+  border-radius: var(--border-radius);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+  text-decoration: none;
+  min-width: 150px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+  color: var(--white);
+  box-shadow: var(--shadow-light);
+  flex: 1;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #495057 100%);
+  color: var(--white);
+  box-shadow: var(--shadow-light);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-link {
+  background: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  box-shadow: none;
+}
+
+.btn-link:hover {
+  background: var(--primary-color);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-light);
+}
+
+/* ===== CONTAINER DE SUCCÈS ===== */
+.success-container {
+  text-align: center;
+  padding: 2rem;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.success-icon {
+  margin-bottom: 2rem;
+}
+
+.success-icon mat-icon {
+  font-size: 4rem;
+  color: var(--success-color);
+  animation: bounce 1s ease-in-out;
+}
+
+.success-content h3 {
+  font-family: 'Playfair Display', serif;
+  color: var(--dark-color);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.success-content p {
+  color: var(--secondary-color);
+  font-size: 1.1rem;
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+}
+
+.success-actions {
+  display: flex;
+  justify-content: center;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .register-container {
+    padding: 1rem;
+  }
+  
+  .register-card {
+    padding: 2rem;
+  }
+  
+  .register-header h2 {
+    font-size: 2rem;
+    flex-direction: column;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .btn-primary,
+  .btn-secondary,
+  .btn-link {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-card {
+    padding: 1.5rem;
+  }
+  
+  .register-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .form-section {
+    padding: 1.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.2rem;
+  }
+}

@@ -1,0 +1,177 @@
+<!-- Message de test pour vérifier le chargement -->
+<div style="background: #2196f3; color: white; padding: 1rem; margin: 1rem; border-radius: 8px;">
+  ✅ Client Dashboard chargé avec succès !
+</div>
+
+<div class="client-dashboard">
+  <!-- En-tête -->
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">
+      <mat-icon class="title-icon">dashboard</mat-icon>
+      Mon Tableau de Bord
+    </h1>
+    <p class="dashboard-subtitle">Suivez vos commandes et votre historique d'achats</p>
+  </div>
+
+  <!-- Statistiques -->
+  <div class="stats-section">
+    <div class="stat-card">
+      <mat-icon class="stat-icon">receipt</mat-icon>
+      <div class="stat-content">
+        <h3>{{ getTotalOrders() }}</h3>
+        <p>Total commandes</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <mat-icon class="stat-icon">euro</mat-icon>
+      <div class="stat-content">
+        <h3>{{ getTotalSpent() | currency:'TND' }}</h3>
+        <p>Total dépensé</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <mat-icon class="stat-icon">trending_up</mat-icon>
+      <div class="stat-content">
+        <h3>{{ getAverageOrderValue() | currency:'TND' }}</h3>
+        <p>Panier moyen</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⭐ Recommandations -->
+ <!-- ⭐ Recommandations -->
+<app-reco-strip [historyIds]="recoHistoryIds"></app-reco-strip>
+
+
+  <!-- Filtres -->
+  <div class="filters-section">
+    <div class="filter-group">
+      <label>Filtrer par statut :</label>
+      <select [(ngModel)]="orderStatusFilter">
+        <option value="">Toutes les commandes</option>
+        <option *ngFor="let status of getStatusOptions()" [value]="status">
+          {{ getStatusLabel(status) }} ({{ getOrderCountByStatus(status) }})
+        </option>
+      </select>
+    </div>
+    <button class="btn-refresh" (click)="loadUserOrders()">
+      <mat-icon>refresh</mat-icon>
+      Actualiser
+    </button>
+  </div>
+
+  <!-- État de chargement -->
+  <div *ngIf="isLoading" class="loading-section">
+    <mat-spinner diameter="50" class="loading-spinner"></mat-spinner>
+    <p>Chargement de vos commandes...</p>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage && !isLoading" class="error-section">
+    <mat-icon class="error-icon">error</mat-icon>
+    <p>{{ errorMessage }}</p>
+    <button class="btn-retry" (click)="loadUserOrders()">
+      <mat-icon>refresh</mat-icon>
+      Réessayer
+    </button>
+  </div>
+
+  <!-- Liste des commandes -->
+  <div *ngIf="!isLoading && !errorMessage" class="orders-section">
+    <h2 class="section-title">Mes Commandes</h2>
+
+    <div class="orders-grid">
+      <div *ngFor="let order of getFilteredOrders()" class="order-card">
+        <div class="order-header">
+          <div class="order-info">
+            <h3>Commande N° {{ order.id }}</h3>
+            <span class="order-date">{{ formatDate(order.orderDate) }}</span>
+          </div>
+          <span
+            class="order-status"
+            [style.background-color]="getOrderStatusColor(order.status)"
+          >
+            <mat-icon>{{ getOrderStatusIcon(order.status) }}</mat-icon>
+            {{ getOrderStatusLabel(order.status) }}
+          </span>
+        </div>
+
+        <div class="order-summary">
+          <div class="summary-item">
+            <mat-icon>euro</mat-icon>
+            <span class="summary-label">Total :</span>
+            <span class="summary-value">{{ order.total | currency:'TND' }}</span>
+          </div>
+          <div class="summary-item">
+            <mat-icon>inventory</mat-icon>
+            <span class="summary-label">Produits :</span>
+            <span class="summary-value">{{ order.products?.length || 0 }} article(s)</span>
+          </div>
+        </div>
+
+        <div class="order-products">
+          <h4>Produits commandés :</h4>
+          <div class="products-preview">
+            <div *ngFor="let product of order.products?.slice(0, 3)" class="product-preview">
+              <img
+                [src]="productService.getImageUrl(product.imageUrl)"
+                [alt]="product.name"
+                (error)="hideBrokenImg($event)"
+              />
+              <div class="product-info">
+                <span class="product-name">{{ product.name }}</span>
+                <span class="product-quantity">x{{ product.quantity || 1 }}</span>
+              </div>
+            </div>
+
+            <div *ngIf="(order.products?.length || 0) > 3" class="more-products">
+              <mat-icon>more_horiz</mat-icon>
+              <span>+{{ (order.products?.length || 0) - 3 }} autres</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-actions">
+          <button class="btn-timeline" (click)="openTimelineModal(order)">
+            <mat-icon>timeline</mat-icon>
+            Suivre ma commande
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aucune commande -->
+    <div *ngIf="getFilteredOrders().length === 0" class="no-orders">
+      <mat-icon class="no-orders-icon">receipt</mat-icon>
+      <h3>Aucune commande trouvée</h3>
+      <p *ngIf="orderStatusFilter">
+        Aucune commande ne correspond au statut sélectionné.
+      </p>
+      <p *ngIf="!orderStatusFilter">
+        Vous n'avez pas encore passé de commande.
+        <a routerLink="/" class="link-shop">Découvrez nos produits</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Modale timeline -->
+  <div *ngIf="showTimelineModal" class="modal-overlay" (click)="closeTimelineModal()">
+    <div class="modal-content timeline-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Suivi de commande N° {{ selectedOrder?.id }}</h3>
+        <button class="btn-close" (click)="closeTimelineModal()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <app-order-timeline
+          *ngIf="selectedOrder"
+          [orderId]="selectedOrder.id!"
+          [currentStatus]="selectedOrder.status"
+          [statusHistory]="selectedOrder.statusHistory || []"
+        ></app-order-timeline>
+      </div>
+    </div>
+  </div>
+</div>

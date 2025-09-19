@@ -1,0 +1,86 @@
+<section class="neo-page contact" (mousemove)="onMouse($event)">
+  <header class="hero slim">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d’Ariane">
+        <a routerLink="/">Accueil</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Contact</span>
+      </nav>
+      <h1>Contactez-nous</h1>
+      <p class="lead">Un devis événement, une commande spéciale ou une question ? Écrivez-nous.</p>
+    </div>
+  </header>
+
+  <section class="section container grid">
+    <!-- Infos -->
+    <aside class="glass info card-tilt">
+      <h2>Coordonnées</h2>
+      <ul class="list">
+        <li><span>📍</span> 123 Avenue du Jasmin, Tunis</li>
+        <li><span>📞</span> <a href="tel:+21612345678">+216 12 345 678</a></li>
+        <li><span>✉️</span> <a href="mailto:contact@douceurdor.tn">contact@douceurdor.tn</a></li>
+        <li><span>⏰</span> Lun–Sam 09h–19h · Dim 10h–14h</li>
+      </ul>
+      <div class="socials" aria-label="Nos réseaux">
+        <a href="#" aria-label="Instagram" class="social">Instagram</a>
+        <a href="#" aria-label="Facebook" class="social">Facebook</a>
+        <a href="#" aria-label="TikTok" class="social">TikTok</a>
+      </div>
+      <div class="map glass">
+        <iframe title="Carte" src="https://www.google.com/maps?q=Tunis&output=embed" loading="lazy"></iframe>
+      </div>
+    </aside>
+
+    <!-- Formulaire -->
+    <div class="glass form badge-border card-tilt">
+      <h2>Écrivez-nous</h2>
+      <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate aria-describedby="contact-help" aria-live="polite">
+        <p id="contact-help" class="muted">Tous les champs marqués sont requis.</p>
+        <div class="row">
+          <label class="fg">
+            <input placeholder=" " name="name" [(ngModel)]="model.name" required minlength="2" autocomplete="name" aria-required="true">
+            <span>Nom complet</span>
+            <small class="error" *ngIf="f.submitted && f.controls['name']?.invalid">Veuillez saisir au moins 2 caractères.</small>
+          </label>
+          <label class="fg">
+            <input placeholder=" " name="email" [(ngModel)]="model.email" required email autocomplete="email" aria-required="true">
+            <span>Email</span>
+            <small class="error" *ngIf="f.submitted && f.controls['email']?.invalid">Adresse email invalide.</small>
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="fg">
+            <input placeholder=" " name="phone" [(ngModel)]="model.phone" pattern="^[0-9 +()-]{6,}$" autocomplete="tel">
+            <span>Téléphone (optionnel)</span>
+            <small class="error" *ngIf="f.submitted && f.controls['phone']?.invalid">Numéro non valide.</small>
+          </label>
+          <label class="fg">
+            <input placeholder=" " name="subject" [(ngModel)]="model.subject" required minlength="3" aria-required="true">
+            <span>Sujet</span>
+            <small class="error" *ngIf="f.submitted && f.controls['subject']?.invalid">Sujet trop court.</small>
+          </label>
+        </div>
+
+        <label class="fg">
+          <textarea placeholder=" " rows="6" name="message" [(ngModel)]="model.message" required minlength="10" aria-required="true" aria-describedby="message-help"></textarea>
+          <span>Message</span>
+          <div class="assist">
+            <small id="message-help" class="muted">Détaillez votre demande : date, quantité, thème…</small>
+            <small class="counter" aria-live="polite">{{ (model.message || '').length }}/1000</small>
+          </div>
+          <small class="error" *ngIf="f.submitted && f.controls['message']?.invalid">10 caractères minimum.</small>
+        </label>
+
+        <div class="actions">
+          <button class="btn btn-primary" [disabled]="f.invalid || sending">{{ sending ? 'Envoi…' : 'Envoyer' }}</button>
+          <span class="muted">Réponse sous 24h ouvrées.</span>
+        </div>
+
+        <p *ngIf="success" class="toast" role="status">Merci ! Votre message a bien été envoyé.</p>
+      </form>
+    </div>
+  </section>
+</section>
+  

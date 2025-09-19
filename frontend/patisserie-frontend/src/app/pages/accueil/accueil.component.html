@@ -1,0 +1,34 @@
+<div class="accueil-container">
+  <!-- Section Hero -->
+  <div class="hero-section">
+    <app-hero-section></app-hero-section>
+  </div>
+
+  <!-- Section Catalogue -->
+  <div class="catalogue-section">
+    <div class="section-header">
+      <h2 class="section-title">
+        <mat-icon class="title-icon">star</mat-icon>
+        Nos créations vedettes
+      </h2>
+      <p class="section-subtitle">Découvrez notre sélection de pâtisseries artisanales</p>
+    </div>
+    
+    <div class="catalogue-wrapper">
+      <app-catalogue></app-catalogue>
+    </div>
+  </div>
+
+  <!-- Section Call to Action -->
+  <div class="cta-section">
+    <div class="cta-card">
+      <mat-icon class="cta-icon">cake</mat-icon>
+      <h3>Prêt à découvrir nos délices ?</h3>
+      <p>Explorez notre catalogue complet de pâtisseries artisanales</p>
+      <button class="cta-button" routerLink="/nos-creations">
+        <mat-icon>arrow_forward</mat-icon>
+        Voir toutes nos créations
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,110 @@
+<div class="detail-wrapper">
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Chargement du produit...</p>
+  </div>
+
+  <!-- Erreur -->
+  <div *ngIf="!isLoading && errorMessage" class="error">
+    <mat-icon>error</mat-icon>
+    <span>{{ errorMessage }}</span>
+  </div>
+
+  <!-- Contenu -->
+  <div *ngIf="!isLoading && product" class="detail-card">
+    <!-- Galerie -->
+    <div class="image-side">
+      <div class="main-image">
+        <img
+          *ngIf="!imageHidden"
+          [src]="productService.getImageUrl(product.imageUrl)"
+          [alt]="product.name"
+          (error)="onImgError()"
+        />
+        <div *ngIf="imageHidden" class="no-image">
+          <mat-icon>image_not_supported</mat-icon>
+          <span>Image non disponible</span>
+        </div>
+      </div>
+      <div class="thumbs" *ngIf="!imageHidden">
+        <img [src]="productService.getImageUrl(product.imageUrl)" [alt]="product.name" />
+        <img [src]="productService.getImageUrl(product.imageUrl)" [alt]="product.name" />
+        <img [src]="productService.getImageUrl(product.imageUrl)" [alt]="product.name" />
+      </div>
+    </div>
+
+    <!-- Infos & achat -->
+    <div class="info-side">
+      <h1 class="title">{{ product.name }}</h1>
+
+      <div class="category">
+        <mat-icon>category</mat-icon>
+        <span>{{ product.category }}</span>
+      </div>
+
+      <p class="description">{{ product.description }}</p>
+
+      <aside class="purchase">
+        <div class="perkg">
+          <span class="label">Prix / kg</span>
+          <span class="value">{{ product.price | number:'1.3-3' }} TND</span>
+        </div>
+
+        <div class="choose-grams">
+          <span class="label">Quantité (g)</span>
+          <div class="grams-row">
+            <button
+              class="chip"
+              *ngFor="let s of steps"
+              [class.active]="grams === s"
+              (click)="changeGrams(s)"
+              type="button"
+            >
+              {{ s }}g
+            </button>
+          </div>
+          <div class="grams-input">
+            <input
+              type="number"
+              min="100"
+              max="5000"
+              step="50"
+              [(ngModel)]="grams"
+              (ngModelChange)="changeGrams($event)"
+            />
+          </div>
+        </div>
+
+        <div class="computed">
+          <span class="label">Prix estimé</span>
+          <span class="value">{{ computedPrice | number:'1.3-3' }} TND</span>
+        </div>
+
+        <div class="meta">
+          <div class="stock" [class.out]="isExpired()">
+            <mat-icon>{{ isExpired() ? 'report' : 'inventory' }}</mat-icon>
+            <span>{{ stockLabel }}</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button
+            class="btn-primary"
+            (click)="addToCart()"
+            [disabled]="isExpired()"
+            type="button"
+          >
+            <mat-icon>add_shopping_cart</mat-icon>
+            Ajouter au panier
+          </button>
+
+          <button class="btn-secondary" routerLink="/nos-creations" type="button">
+            <mat-icon>arrow_back</mat-icon>
+            Retour aux produits
+          </button>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>

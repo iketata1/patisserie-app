@@ -1,0 +1,124 @@
+<section class="neo-page" (mousemove)="onMouse($event)">
+  <!-- HERO -->
+  <header class="hero">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d’Ariane">
+        <a routerLink="/">Accueil</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">À propos</span>
+      </nav>
+      <span class="chip">Douceur d’Or</span>
+      <h1><span>L’excellence</span> de la pâtisserie tunisienne</h1>
+      <p class="lead">
+        Tradition, précision et créativité contemporaine. Notre atelier conçoit des pièces
+        uniques pour le quotidien comme pour vos grands moments.
+      </p>
+      <div class="hero-actions">
+        <a routerLink="/catalogue" class="btn btn-primary">Découvrir</a>
+        <a routerLink="/contact" class="btn btn-ghost">Nous contacter</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MANIFESTE + GALERIE -->
+  <section class="section container manifesto">
+    <div class="glass card-tilt">
+      <h2>Notre manifeste</h2>
+      <p>
+        Nos recettes naissent d’un dialogue entre l’héritage tunisien et une recherche constante
+        d’équilibre. Texture, température, contraste : chaque détail compte.
+      </p>
+      <ul class="timeline">
+        <li><b>2019</b> — Ouverture de l’atelier</li>
+        <li><b>2021</b> — Première collection signature</li>
+        <li><b>2024</b> — Service évènementiel & traiteur</li>
+      </ul>
+    </div>
+    <div class="gallery card-tilt">
+      <figure class="frame f1">
+        <figcaption class="sr-only">Entremets chocolat</figcaption>
+      </figure>
+      <figure class="frame f2">
+        <figcaption class="sr-only">Tarte citron</figcaption>
+      </figure>
+      <figure class="frame f3">
+        <figcaption class="sr-only">Macarons assortis</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  
+  <!-- STATS -->
+  <section class="section stats-wrap">
+    <div class="container stats glass">
+      <div class="stat">
+        <div class="stat-num" data-target="1200">0</div>
+        <div class="stat-label">Clients ravis</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-target="350">0</div>
+        <div class="stat-label">Évènements servis</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-target="45">0</div>
+        <div class="stat-label">Recettes signature</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÉQUIPE -->
+  <section class="section container">
+    <h2 class="center">L’équipe</h2>
+    <div class="grid-3 team">
+      <article class="glass card-tilt">
+        <div class="avatar">A</div>
+        <h3>Aïcha Ben Salem</h3>
+        <p class="muted">Cheffe pâtissière</p>
+        <p>Entremets équilibrés & biscuits fins.</p>
+      </article>
+      <article class="glass card-tilt">
+        <div class="avatar">Y</div>
+        <h3>Youssef Ghariani</h3>
+        <p class="muted">Chocolatier</p>
+        <p>Tempérage, ganaches et finitions nettes.</p>
+      </article>
+      <article class="glass card-tilt">
+        <div class="avatar">M</div>
+        <h3>Meriem Hachemi</h3>
+        <p class="muted">Design & R&D</p>
+        <p>Couleurs naturelles, graphismes délicats.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section container cta glass">
+    <h2>Envie de goûter ?</h2>
+    <p class="muted">Commandez en ligne ou passez nous voir en boutique.</p>
+    <div class="hero-actions">
+      <a routerLink="/catalogue" class="btn btn-primary">Parcourir le catalogue</a>
+      <a routerLink="/contact" class="btn btn-ghost">Un projet ?</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section container">
+    <h2 class="center">FAQ</h2>
+    <div class="faq">
+      <details class="glass">
+        <summary>Faites-vous des commandes personnalisées ?</summary>
+        <p>Oui, pour mariages, baptêmes, anniversaires et évènements. Contactez-nous avec la date, le thème et le nombre d’invités.</p>
+      </details>
+      <details class="glass">
+        <summary>Quel est le délai idéal pour commander ?</summary>
+        <p>Pour les pièces classiques, 48–72h. Pour les pièces artistiques ou grands évènements, 7–14 jours.</p>
+      </details>
+      <details class="glass">
+        <summary>Proposez-vous des options sans gluten ou sans lactose ?</summary>
+        <p>Oui, certaines recettes. Mentionnez vos contraintes et nous proposerons des alternatives.</p>
+      </details>
+    </div>
+  </section>
+</section>
+  

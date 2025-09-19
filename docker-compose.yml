@@ -1,0 +1,79 @@
+﻿services:
+  db:
+    image: mysql:8.0
+    container_name: patiss-db
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_ROOT_PASSWORD: ""                 # mdp root vide
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"       # requis si mdp vide
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -uroot -p'' --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    networks:
+      - patiss-net
+
+  backend:
+    build:
+      context: ./backend/pat3
+      dockerfile: Dockerfile
+    container_name: patiss-backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Datasource → on pointe sur l’hôte "db" (pas localhost)
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DB}?useUnicode=true&useJDBCCompliantTimezoneShift=true&createDatabaseIfNotExist=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: "${MYSQL_PASSWORD}"
+
+      # Contexte & uploads
+      SERVER_SERVLET_CONTEXT_PATH: ${SERVER_CONTEXT}
+      APP_UPLOAD_DIR: /data/uploads
+
+      # AI service (si tu l’utilises)
+      AI_BASE_URL: http://ai:${AI_PORT}
+    ports:
+      - "${BACKEND_PORT}:8084"
+    volumes:
+      - ${UPLOADS_HOST_DIR}:/data/uploads
+    networks:
+      - patiss-net
+
+  frontend:
+    build:
+      context: ./frontend/patisserie-frontend
+      dockerfile: Dockerfile
+    container_name: patiss-frontend
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT}:80"
+    networks:
+      - patiss-net
+
+  # --- Optionnel : micro-service AI (FastAPI/uvicorn) ---
+  ai:
+    build:
+      context: ./frontend/patisserie-frontend/ai-service
+      dockerfile: Dockerfile
+    container_name: patiss-ai
+    environment:
+      PORT: ${AI_PORT}
+    expose:
+      - "${AI_PORT}"
+    networks:
+      - patiss-net
+
+volumes:
+  dbdata:
+
+networks:
+  patiss-net:
+    driver: bridge

@@ -1,0 +1,46 @@
+<div class="catalogue">
+  <!-- Titre du catalogue -->
+  <h2 class="catalogue-title">Découvrez notre sélection de pâtisseries artisanales</h2>
+  
+  <!-- Filtre par catégorie -->
+<mat-form-field appearance="outline" class="filtre-categorie">
+    <mat-label>
+      <mat-icon class="filter-icon">filter_list</mat-icon>
+      Filtrer par catégorie
+    </mat-label>
+  <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onCategoryChange()">
+      <mat-option value="Toutes">Toutes les catégories</mat-option>
+      <mat-option *ngFor="let cat of categories" [value]="cat">
+        {{ cat }}
+      </mat-option>
+  </mat-select>
+    <mat-icon matSuffix>expand_more</mat-icon>
+</mat-form-field>
+
+  <!-- Grille des produits -->
+  <div class="catalogue-grid">
+    <!-- État de chargement -->
+    <div *ngIf="isLoading" class="catalogue-loading">
+      <mat-spinner class="loading-spinner" diameter="60"></mat-spinner>
+      <p>Chargement des produits...</p>
+    </div>
+
+    <!-- Produits -->
+    <app-carte-produit 
+      *ngFor="let product of products; trackBy: trackByProductId" 
+      [produit]="product"
+      class="product-card"
+    ></app-carte-produit>
+
+    <!-- Message si aucun produit -->
+    <div *ngIf="!isLoading && products.length === 0" class="no-products">
+      <mat-icon class="no-products-icon">cake_off</mat-icon>
+      <h3>Aucun produit trouvé</h3>
+      <p>Aucun produit ne correspond à votre recherche.</p>
+      <button mat-raised-button color="primary" (click)="resetFilter()">
+        <mat-icon>refresh</mat-icon>
+        Voir tous les produits
+      </button>
+    </div>
+  </div>
+</div>

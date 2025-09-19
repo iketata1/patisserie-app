@@ -1,0 +1,77 @@
+html, body, app-root {
+  height: 100%;
+}
+body, app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.footer {
+  margin-top: auto;
+  background: #222;
+  color: #fff;
+  padding: 2rem 0 1rem 0;
+  border-top: 2px solid #e5c07b;
+  font-family: 'Montserrat', sans-serif;
+}
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.footer-logo img {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  border: 2px solid #e5c07b;
+  background: #fff;
+}
+.footer-brand .brand-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: #e5c07b;
+  font-weight: bold;
+}
+.footer-brand .brand-slogan {
+  font-size: 0.9rem;
+  color: #fffbe6;
+  font-style: italic;
+}
+.footer-infos p {
+  margin: 0.2rem 0;
+  color: #fff;
+}
+.footer-socials a {
+  color: #e5c07b;
+  margin-right: 0.7rem;
+  font-size: 1.5rem;
+  transition: color 0.2s;
+}
+.footer-socials a:hover {
+  color: #fffbe6;
+}
+.footer-legal {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #fffbe6;
+}
+.footer-legal a {
+  color: #e5c07b;
+  text-decoration: underline;
+}
+@media (max-width: 900px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}

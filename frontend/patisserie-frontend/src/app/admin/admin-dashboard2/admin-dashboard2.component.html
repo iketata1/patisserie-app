@@ -1,0 +1,56 @@
+<div class="dashboard2-layout">
+  <aside class="sidebar">
+    <ul>
+      <li [class.active]="section==='orders'" (click)="section='orders'"><mat-icon>list</mat-icon> Orders</li>
+      <li [class.active]="section==='products'" (click)="section='products'"><mat-icon>inventory_2</mat-icon> Products</li>
+      <li [class.active]="section==='add-product'" (click)="section='add-product'"><mat-icon>add_circle</mat-icon> Add Product</li>
+    </ul>
+  </aside>
+  <main class="main-content">
+    <div *ngIf="section==='orders'">
+      <h2>Orders</h2>
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Client</th><th>Status</th><th>Total</th><th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td>{{ order.id }}</td>
+            <td>{{ order.buyerDetails?.name }}</td>
+            <td><span [ngClass]="getStatusClass(order.status)">{{ order.status }}</span></td>
+            <td>{{ order.total | currency:'TND' }}</td>
+            <td>{{ order.orderDate | date:'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="section==='products'">
+      <h2>Products</h2>
+      <div class="products-grid">
+        <div class="product-card" *ngFor="let product of products">
+          <img [src]="productService.getImageUrl(product.imageUrl)" alt="{{ product.name }}" />
+          <div>
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <span>{{ product.price | currency:'TND' }}</span>
+            <button (click)="deleteProduct(product.id!)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="section==='add-product'">
+      <h2>Add Product</h2>
+      <form (ngSubmit)="addProduct()">
+        <input [(ngModel)]="newProduct.name" name="name" placeholder="Name" required />
+        <input [(ngModel)]="newProduct.description" name="description" placeholder="Description" />
+        <input [(ngModel)]="newProduct.price" name="price" type="number" placeholder="Price" required />
+        <input [(ngModel)]="newProduct.stock" name="stock" type="number" placeholder="Stock" required />
+        <input [(ngModel)]="newProduct.category" name="category" placeholder="Category" required />
+        <input [(ngModel)]="newProduct.imageUrl" name="imageUrl" placeholder="Image URL" />
+        <button type="submit">Add</button>
+      </form>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,48 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: patiss-backend
+  namespace: patiss
+spec:
+  selector:
+    app: patiss-backend
+  ports:
+    - port: 8084
+      targetPort: 8084
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: patiss-backend
+  namespace: patiss
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: patiss-backend
+  template:
+    metadata:
+      labels:
+        app: patiss-backend
+    spec:
+      containers:
+        - name: backend
+          image: patiss-app-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8084
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom: { configMapKeyRef: { name: app-config, key: SPRING_DATASOURCE_URL } }
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom: { secretKeyRef: { name: db-secret, key: MYSQL_USER } }
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom: { secretKeyRef: { name: db-secret, key: MYSQL_PASSWORD } }
+            - name: FILE_UPLOAD_DIR
+              value: /data/uploads
+          volumeMounts:
+            - name: uploads
+              mountPath: /data/uploads
+      volumes:
+        - name: uploads
+          emptyDir: {}

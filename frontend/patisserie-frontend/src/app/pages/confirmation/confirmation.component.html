@@ -1,0 +1,21 @@
+<div class="confirmation-container">
+  <div class="confirmation-card">
+    <div class="success-icon">
+      <mat-icon>check_circle</mat-icon>
+    </div>
+    <h2>Commande confirmée !</h2>
+    <p class="confirmation-message">
+      Votre commande <span *ngIf="orderId">(N° {{ orderId }})</span> 
+      d'un montant de <strong>{{ total | currency:'TND' }}</strong> 
+      a été enregistrée avec succès.
+    </p>
+    <div class="confirmation-details">
+      <p>Nous vous contacterons bientôt pour confirmer votre commande.</p>
+      <p>Merci de votre confiance !</p>
+    </div>
+    <div class="action-buttons">
+      <button routerLink="/" class="home-btn">Retour à l'accueil</button>
+      <button routerLink="/nos-creations" class="shop-btn">Continuer les achats</button>
+    </div>
+  </div>
+</div> 

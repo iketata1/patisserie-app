@@ -1,0 +1,364 @@
+<div class="product-create-container">
+  <!-- Header avec navigation et indicateur de progression -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="back-btn" routerLink="/admin-dashboard">
+          <mat-icon>arrow_back</mat-icon>
+          <span>Retour au dashboard</span>
+        </button>
+      </div>
+      <div class="header-center">
+        <h1 class="page-title">
+          <div class="title-icon-wrapper">
+            <mat-icon class="title-icon">add_circle</mat-icon>
+          </div>
+          <span>Nouveau Produit</span>
+        </h1>
+        <p class="page-subtitle">Créez une nouvelle création pour votre catalogue</p>
+      </div>
+      <div class="header-right">
+        <div class="progress-indicator">
+          <div class="progress-step active" data-step="1">
+            <div class="step-number">1</div>
+            <span>Informations</span>
+          </div>
+          <div class="progress-step" data-step="2">
+            <div class="step-number">2</div>
+            <span>Image</span>
+          </div>
+          <div class="progress-step" data-step="3">
+            <div class="step-number">3</div>
+            <span>Validation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenu principal -->
+  <div class="main-content">
+    <div class="form-container">
+      <form (ngSubmit)="onSubmit()" enctype="multipart/form-data" class="product-form" #productForm="ngForm">
+        
+        <!-- Section 1: Informations de base -->
+        <div class="form-section" id="section-1">
+          <div class="section-header">
+            <div class="section-icon">
+              <mat-icon>info</mat-icon>
+            </div>
+            <div class="section-content">
+              <h2>Informations de base</h2>
+              <p>Définissez les détails essentiels de votre produit</p>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <!-- Nom du produit -->
+            <div class="form-group">
+              <div class="input-wrapper">
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>
+                    <mat-icon class="field-icon">inventory_2</mat-icon>
+                    Nom du produit
+                  </mat-label>
+                  <input matInput [(ngModel)]="product.name" name="name" required 
+                         placeholder="Ex: Gâteau au chocolat signature" 
+                         class="form-input">
+                  <mat-icon matSuffix class="suffix-icon">cake</mat-icon>
+                </mat-form-field>
+                <div class="input-hint">Choisissez un nom attractif et descriptif</div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+              <div class="input-wrapper">
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>
+                    <mat-icon class="field-icon">description</mat-icon>
+                    Description détaillée
+                  </mat-label>
+                  <textarea matInput [(ngModel)]="product.description" name="description" 
+                            rows="4" placeholder="Décrivez les ingrédients, la texture, le goût et les occasions spéciales..."
+                            class="form-textarea"></textarea>
+                  <mat-icon matSuffix class="suffix-icon">edit</mat-icon>
+                </mat-form-field>
+                <div class="input-hint">Détaillez ce qui rend votre produit unique</div>
+              </div>
+            </div>
+
+            <!-- Catégorie -->
+            <div class="form-group">
+              <div class="input-wrapper">
+                <mat-form-field appearance="outline" class="form-field">
+                  <mat-label>
+                    <mat-icon class="field-icon">category</mat-icon>
+                    Catégorie
+                  </mat-label>
+                  <mat-select [(ngModel)]="product.category" name="category" required class="form-select">
+                    <mat-option *ngFor="let cat of categories" [value]="cat" class="category-option">
+                      <div class="option-content">
+                        <mat-icon class="option-icon">{{ getCategoryIcon(cat) }}</mat-icon>
+                        <span>{{ cat }}</span>
+                      </div>
+                    </mat-option>
+                  </mat-select>
+                  <mat-icon matSuffix class="suffix-icon">folder</mat-icon>
+                </mat-form-field>
+                <div class="input-hint">Sélectionnez la catégorie appropriée</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Prix et Stock -->
+        <div class="form-section" id="section-2">
+          <div class="section-header">
+            <div class="section-icon">
+              <mat-icon>payments</mat-icon>
+            </div>
+            <div class="section-content">
+              <h2>Prix et disponibilité</h2>
+              <p>Définissez le prix et la quantité disponible</p>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <div class="pricing-grid">
+              <!-- Prix -->
+              <div class="form-group">
+                <div class="input-wrapper">
+                  <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>
+                      <mat-icon class="field-icon">euro</mat-icon>
+                      Prix (TND)
+                    </mat-label>
+                    <input matInput type="number" [(ngModel)]="product.price" name="price" 
+                           required placeholder="0.00" step="0.01" min="0"
+                           class="form-input">
+                    <mat-icon matSuffix class="suffix-icon">payments</mat-icon>
+                  </mat-form-field>
+                  <div class="input-hint">Prix en dinars tunisiens</div>
+                </div>
+              </div>
+
+              <!-- Stock -->
+              <div class="form-group">
+                <div class="input-wrapper">
+                  <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>
+                      <mat-icon class="field-icon">inventory</mat-icon>
+                      Stock disponible
+                    </mat-label>
+                    <input matInput type="number" [(ngModel)]="product.stock" name="stock" 
+                           required placeholder="0" min="0"
+                           class="form-input">
+                    <mat-icon matSuffix class="suffix-icon">shopping_cart</mat-icon>
+                  </mat-form-field>
+                  <div class="input-hint">Nombre d'unités en stock</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Indicateur de statut -->
+            <div class="status-indicator">
+              <div class="status-item" [class.active]="product.stock > 0">
+                <div class="status-dot"></div>
+                <span>En stock</span>
+              </div>
+              <div class="status-item" [class.active]="product.stock === 0">
+                <div class="status-dot"></div>
+                <span>Rupture de stock</span>
+              </div>
+              <div class="status-item" [class.active]="product.stock < 5 && product.stock > 0">
+                <div class="status-dot"></div>
+                <span>Stock limité</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Image du produit -->
+        <div class="form-section" id="section-3">
+          <div class="section-header">
+            <div class="section-icon">
+              <mat-icon>photo_camera</mat-icon>
+            </div>
+            <div class="section-content">
+              <h2>Image du produit</h2>
+              <p>Ajoutez une image attractive pour votre produit</p>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <div class="image-upload-container">
+              <!-- Zone de drop -->
+              <div class="drop-zone" 
+                   [class.has-image]="imagePreview || imgSrc"
+                   (dragover)="onDragOver($event)"
+                   (dragleave)="onDragLeave($event)"
+                   (drop)="onDrop($event)">
+                
+                <div *ngIf="!imagePreview && !imgSrc" class="upload-placeholder">
+                  <div class="upload-icon-wrapper">
+                    <mat-icon class="upload-icon">cloud_upload</mat-icon>
+                  </div>
+                  <div class="upload-text">
+                    <h3>Glissez-déposez votre image ici</h3>
+                    <p>ou cliquez pour sélectionner un fichier</p>
+                  </div>
+                  <div class="upload-requirements">
+                    <span class="requirement">PNG, JPG, JPEG</span>
+                    <span class="requirement">Max 10MB</span>
+                    <span class="requirement">Ratio 1:1 recommandé</span>
+                  </div>
+                  <input type="file" (change)="onFileSelected($event)" 
+                         accept="image/*" class="file-input" id="imageInput">
+                  <label for="imageInput" class="upload-button">
+                    <mat-icon>add_photo_alternate</mat-icon>
+                    Choisir une image
+                  </label>
+                </div>
+
+                <!-- Aperçu de l'image -->
+                <div *ngIf="imagePreview || imgSrc" class="image-preview-wrapper">
+                  <div class="preview-container">
+                    <img [src]="imagePreview || imgSrc" alt="Aperçu du produit" class="preview-image" 
+                         (error)="imgSrc = null; imagePreview = null" />
+                    <div class="preview-overlay">
+                      <div class="overlay-actions">
+                        <button type="button" class="action-btn edit-btn" (click)="editImage()">
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                        <button type="button" class="action-btn remove-btn" (click)="removeImage()">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="image-info">
+                    <div class="info-item">
+                      <mat-icon>check_circle</mat-icon>
+                      <span>Image {{ imagePreview ? 'sélectionnée' : 'chargée' }}</span>
+                    </div>
+                    <div class="info-item" *ngIf="imageFile">
+                      <mat-icon>info</mat-icon>
+                      <span>{{ imageFile.name }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Actions -->
+        <div class="form-section" id="section-4">
+          <div class="section-header">
+            <div class="section-icon">
+              <mat-icon>check_circle</mat-icon>
+            </div>
+            <div class="section-content">
+              <h2>Finaliser</h2>
+              <p>Vérifiez et ajoutez votre produit</p>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <!-- Résumé du produit -->
+            <div class="product-summary" *ngIf="product.name || product.description || product.price > 0">
+              <h3>Résumé du produit</h3>
+              <div class="summary-content">
+                <div class="summary-item" *ngIf="product.name">
+                  <span class="label">Nom:</span>
+                  <span class="value">{{ product.name }}</span>
+                </div>
+                <div class="summary-item" *ngIf="product.category">
+                  <span class="label">Catégorie:</span>
+                  <span class="value">{{ product.category }}</span>
+                </div>
+                <div class="summary-item" *ngIf="product.price > 0">
+                  <span class="label">Prix:</span>
+                  <span class="value">{{ product.price }} TND</span>
+                </div>
+                <div class="summary-item" *ngIf="product.stock >= 0">
+                  <span class="label">Stock:</span>
+                  <span class="value">{{ product.stock }} unités</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" (click)="resetForm()">
+                <mat-icon>refresh</mat-icon>
+                <span>Réinitialiser</span>
+              </button>
+              <button type="button" class="btn-preview" (click)="previewProduct()">
+                <mat-icon>visibility</mat-icon>
+                <span>Aperçu</span>
+              </button>
+              <button type="submit" class="btn-primary" [disabled]="!productForm.form.valid">
+                <mat-icon>add</mat-icon>
+                <span>Ajouter le produit</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Sidebar avec aide et conseils -->
+    <div class="sidebar">
+      <div class="sidebar-content">
+        <div class="help-section">
+          <h3>
+            <mat-icon>help</mat-icon>
+            Conseils pour un bon produit
+          </h3>
+          <div class="tips-list">
+            <div class="tip-item">
+              <mat-icon class="tip-icon">lightbulb</mat-icon>
+              <div class="tip-content">
+                <h4>Nom attractif</h4>
+                <p>Utilisez des mots descriptifs qui évoquent le goût et la qualité</p>
+              </div>
+            </div>
+            <div class="tip-item">
+              <mat-icon class="tip-icon">photo_camera</mat-icon>
+              <div class="tip-content">
+                <h4>Image de qualité</h4>
+                <p>Une belle photo augmente significativement les ventes</p>
+              </div>
+            </div>
+            <div class="tip-item">
+              <mat-icon class="tip-icon">description</mat-icon>
+              <div class="tip-content">
+                <h4>Description détaillée</h4>
+                <p>Décrivez les ingrédients, textures et occasions d'utilisation</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-section">
+          <h3>
+            <mat-icon>analytics</mat-icon>
+            Statistiques rapides
+          </h3>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-number">{{ categories.length }}</div>
+              <div class="stat-label">Catégories</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">0</div>
+              <div class="stat-label">Produits créés</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

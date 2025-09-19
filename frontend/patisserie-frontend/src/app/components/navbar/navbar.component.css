@@ -1,0 +1,313 @@
+/* Navbar Container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-bottom: 3px solid #e5c07b;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 32px rgba(229, 192, 123, 0.15);
+  backdrop-filter: blur(20px);
+}
+
+/* Logo Section */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.02);
+}
+
+.navbar-logo img {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  border: 3px solid #e5c07b;
+  box-shadow: 0 4px 15px rgba(229, 192, 123, 0.3);
+  transition: all 0.3s ease;
+  background: #fff;
+}
+
+.navbar-logo img:hover {
+  transform: rotate(5deg);
+  box-shadow: 0 6px 20px rgba(229, 192, 123, 0.4);
+}
+
+.navbar-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.brand-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  letter-spacing: 1.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: color 0.3s ease;
+}
+
+.brand-slogan {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  color: #e5c07b;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+/* Navigation Links */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li {
+  position: relative;
+}
+
+.navbar-links li a {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  text-decoration: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 25px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-links li a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #e5c07b, #f4d03f);
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+.navbar-links li a:hover::before,
+.navbar-links li a.active::before {
+  left: 0;
+}
+
+.navbar-links li a:hover,
+.navbar-links li a.active {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(229, 192, 123, 0.3);
+}
+
+/* Material Icons */
+.material-icons {
+  font-size: 1.3em;
+  transition: transform 0.3s ease;
+}
+
+.navbar-links li a:hover .material-icons {
+  transform: scale(1.1);
+}
+
+/* Cart Badge */
+.navbar-links li a span {
+  background: #e74c3c;
+  color: white;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-left: 0.3rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .navbar {
+    padding: 1rem 2rem;
+  }
+  
+  .navbar-links {
+    gap: 1.5rem;
+  }
+  
+  .navbar-links li a {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .navbar {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .navbar-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .navbar-links li a {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  .brand-title {
+    font-size: 1.5rem;
+  }
+  
+  .brand-slogan {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar-logo img {
+    height: 50px;
+    width: 50px;
+  }
+  
+  .navbar-links {
+    gap: 0.5rem;
+  }
+  
+  .navbar-links li a {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .brand-title {
+    font-size: 1.3rem;
+  }
+  
+  .brand-slogan {
+    font-size: 0.75rem;
+  }
+}
+
+/* Hover Effects */
+.navbar-links li a:hover {
+  transform: translateY(-2px);
+}
+
+.navbar-links li a:active {
+  transform: translateY(0);
+}
+
+/* Focus States */
+.navbar-links li a:focus {
+  outline: 2px solid #e5c07b;
+  outline-offset: 2px;
+}
+
+/* Loading Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar-links li {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.navbar-links li:nth-child(1) { animation-delay: 0.1s; }
+.navbar-links li:nth-child(2) { animation-delay: 0.2s; }
+.navbar-links li:nth-child(3) { animation-delay: 0.3s; }
+.navbar-links li:nth-child(4) { animation-delay: 0.4s; }
+.navbar-links li:nth-child(5) { animation-delay: 0.5s; }
+.navbar-links li:nth-child(6) { animation-delay: 0.6s; }
+.navbar-links li:nth-child(7) { animation-delay: 0.7s; }
+.navbar-links li:nth-child(8) { animation-delay: 0.8s; }
+
+/* Séparateur visuel avant le lien admin */
+.navbar-links li.admin-separator {
+  border-left: 2px solid #e5c07b;
+  margin-left: 1.2rem;
+  padding-left: 1.2rem;
+  height: 28px;
+  display: flex;
+  align-items: center;
+}
+
+/* Lien admin dashboard accentué */
+.navbar-links li a.admin-link {
+  background: linear-gradient(90deg, #e5c07b 60%, #fffbe6 100%);
+  color: #222;
+  font-weight: 700;
+  border: 2px solid #e5c07b;
+  box-shadow: 0 2px 8px rgba(229,192,123,0.10);
+}
+
+.navbar-links li a.admin-link:hover,
+.navbar-links li a.admin-link.active {
+  background: #e5c07b;
+  color: #fff;
+  border-color: #e5c07b;
+}
+
+/* Responsive ajusté pour dashboard admin */
+@media (max-width: 900px) {
+  .navbar-links {
+    gap: 0.7rem;
+  }
+  .navbar-links li.admin-separator {
+    margin-left: 0.5rem;
+    padding-left: 0.5rem;
+  }
+}
+@media (max-width: 600px) {
+  .navbar-links {
+    gap: 0.2rem;
+  }
+  .navbar-links li a {
+    padding: 0.3rem 0.4rem;
+    font-size: 0.75rem;
+  }
+  .navbar-links li.admin-separator {
+    margin-left: 0.2rem;
+    padding-left: 0.2rem;
+  }
+}
